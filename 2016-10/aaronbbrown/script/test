@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-GODIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-
-# this nonsense exists because go won't exclude vendor dirs from tests
-# https://github.com/golang/go/issues/11659
-go test -v $(go list -f '{{ .Dir }}' ./... | grep -v vendor | sed "s|$GODIR/|./|")
+go test -v $(glide novendor)

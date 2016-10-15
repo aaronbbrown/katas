@@ -6,7 +6,8 @@ import (
 	"os"
 	"strconv"
 
-	"./rps"
+	"../rps"
+
 )
 
 type Score struct {
