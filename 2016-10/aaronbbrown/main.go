@@ -1,14 +1,29 @@
 package main
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 func main() {
 	mode := os.Getenv("MODE")
 
 	switch mode {
 	case "client":
-		Client()
+		address := os.Getenv("ADDRESS")
+		Client(address)
+
 	default:
-		Server()
+		control := make(chan int)
+		games, err := GetEnvNDefault("GAMES", 10)
+		if err != nil {
+			log.Fatal(err)
+		}
+		port, err := GetEnvNDefault("PORT", 5555)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		Server(games, port, control)
 	}
 }
