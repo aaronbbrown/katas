@@ -1,18 +1,14 @@
 package rps
 
 import (
+	"bytes"
 	"fmt"
 )
 
 const (
-	Player1 int = iota
-	Player2
+	Me int = iota
+	You
 )
-
-type GameOutcome struct {
-	Tie    bool
-	Winner int
-}
 
 type Game struct {
 	Throws [2]Throw
@@ -20,16 +16,16 @@ type Game struct {
 
 func (g *Game) Outcome() (*GameOutcome, error) {
 	outcome := &GameOutcome{}
-	if !g.Throws[Player1].Thrown || !g.Throws[Player2].Thrown {
+	if !g.Throws[Me].Thrown || !g.Throws[You].Thrown {
 		return outcome, fmt.Errorf("Both throws haven't been made")
 	}
 
-	if g.Throws[Player1].Type == g.Throws[Player2].Type {
+	if g.Throws[Me].Type == g.Throws[You].Type {
 		outcome.Tie = true
-	} else if saneModInt(int(g.Throws[Player1].Type-1), 3) == int(g.Throws[Player2].Type) {
-		outcome.Winner = Player1
+	} else if saneModInt(int(g.Throws[Me].Type-1), 3) == int(g.Throws[You].Type) {
+		outcome.Winner = Me
 	} else {
-		outcome.Winner = Player2
+		outcome.Winner = You
 	}
 
 	return outcome, nil
@@ -42,4 +38,29 @@ func (g *Game) Throw(player int, tt ThrowType) error {
 	g.Throws[player].Thrown = true
 	g.Throws[player].Type = tt
 	return nil
+}
+
+type GameOutcome struct {
+	Tie    bool
+	Winner int
+}
+
+func (outcome *GameOutcome) String() string {
+	buffer := bytes.NewBufferString("")
+	if outcome.Tie {
+		buffer.WriteString("Tie")
+	} else if outcome.Winner == 0 {
+		buffer.WriteString("Me")
+	} else {
+		buffer.WriteString("You")
+	}
+	return buffer.String()
+}
+
+func (outcome *GameOutcome) UpdateScore(score *Score) {
+	if outcome.Tie {
+		score.Ties++
+	} else {
+		score.Player[outcome.Winner]++
+	}
 }

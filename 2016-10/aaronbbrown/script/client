@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -ex
+
+: ${ADDRESS="tcp://localhost:5555"}
+
+docker run --env ADDRESS="$ADDRESS" --env MODE=client rockpaperscissors ./ropasc

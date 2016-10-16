@@ -23,7 +23,6 @@ RUN ./configure && make && make install && ldconfig
 # test and build our app
 WORKDIR /go/src/github.com/aaronbbrown/rps
 COPY . ./
-RUN glide up && glide install
+RUN glide install
 
-RUN ./script/test
 RUN ./script/build

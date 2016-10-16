@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -ex
+
+: ${PORT:="5555"}
+: ${GAMES:="10"}
+
+docker run --env PORT="$PORT" --env GAMES="$GAMES" --env MODE=server \
+           --publish "$PORT:$PORT" rockpaperscissors ./ropasc

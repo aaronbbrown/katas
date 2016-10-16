@@ -17,8 +17,8 @@ func TestGame_Outcome(t *testing.T) {
 
 	// Tie
 	g = &Game{}
-	g.Throw(Player1, Rock)
-	g.Throw(Player2, Rock)
+	g.Throw(Me, Rock)
+	g.Throw(You, Rock)
 
 	o, err := g.Outcome()
 	assert.Nil(t, err)
@@ -26,53 +26,53 @@ func TestGame_Outcome(t *testing.T) {
 
 	// Rock beats Scissors
 	g = &Game{}
-	g.Throw(Player1, Rock)
-	g.Throw(Player2, Scissors)
+	g.Throw(Me, Rock)
+	g.Throw(You, Scissors)
 	o, err = g.Outcome()
 	assert.Nil(t, err)
 	assert.False(t, o.Tie)
-	assert.Equal(t, o.Winner, Player1)
+	assert.Equal(t, o.Winner, Me)
 
 	g = &Game{}
-	g.Throw(Player2, Rock)
-	g.Throw(Player1, Scissors)
+	g.Throw(You, Rock)
+	g.Throw(Me, Scissors)
 	o, err = g.Outcome()
 	assert.Nil(t, err)
 	assert.False(t, o.Tie)
-	assert.Equal(t, o.Winner, Player2)
+	assert.Equal(t, o.Winner, You)
 
 	// Scissors beats Paper
 	g = &Game{}
-	g.Throw(Player1, Scissors)
-	g.Throw(Player2, Paper)
+	g.Throw(Me, Scissors)
+	g.Throw(You, Paper)
 	o, err = g.Outcome()
 	assert.Nil(t, err)
 	assert.False(t, o.Tie)
-	assert.Equal(t, o.Winner, Player1)
+	assert.Equal(t, o.Winner, Me)
 
 	g = &Game{}
-	g.Throw(Player1, Paper)
-	g.Throw(Player2, Scissors)
+	g.Throw(Me, Paper)
+	g.Throw(You, Scissors)
 	o, err = g.Outcome()
 	assert.Nil(t, err)
 	assert.False(t, o.Tie)
-	assert.Equal(t, o.Winner, Player2)
+	assert.Equal(t, o.Winner, You)
 
 	// Paper beats Rock
 	g = &Game{}
-	g.Throw(Player1, Paper)
-	g.Throw(Player2, Rock)
+	g.Throw(Me, Paper)
+	g.Throw(You, Rock)
 	o, err = g.Outcome()
 	assert.Nil(t, err)
 	assert.False(t, o.Tie)
-	assert.Equal(t, o.Winner, Player1)
+	assert.Equal(t, o.Winner, Me)
 
 	g = &Game{}
-	g.Throw(Player1, Rock)
-	g.Throw(Player2, Paper)
+	g.Throw(Me, Rock)
+	g.Throw(You, Paper)
 	o, err = g.Outcome()
 	assert.Nil(t, err)
 	assert.False(t, o.Tie)
-	assert.Equal(t, o.Winner, Player2)
+	assert.Equal(t, o.Winner, You)
 
 }
