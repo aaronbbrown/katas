@@ -5,4 +5,4 @@ GODIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 . "$GODIR/script/test"
 go build -o rps_client "$GODIR/client"/*
-# go build -o rps_server server/*
+go build -o rps_server "$GODIR/server"/*

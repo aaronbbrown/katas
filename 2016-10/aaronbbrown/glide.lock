@@ -1,6 +1,8 @@
-hash: a9b32ae6224f3767b022e6a42d2e64cb517abd697ffc582a200c1ef02fb06654
-updated: 2016-10-14T07:57:37.998676791-04:00
-imports: []
+hash: bb3bc941de6e3b8e40bbe2045c1f1eb9eef5c87f9209515c735cf693fbf59b17
+updated: 2016-10-16T03:18:16.681135844-04:00
+imports:
+- name: github.com/pebbe/zmq4
+  version: eccbb48ddab7c3989994739b07868056997893da
 testImports:
 - name: github.com/davecgh/go-spew
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
