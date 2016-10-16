@@ -27,14 +27,11 @@ func Server(games int, port int, control chan int) {
 				fmt.Printf("%v\n", err)
 				break
 			}
-			fmt.Printf("Received: %v", msg)
-
 			game := &rps.Game{}
 
 			strategy := &rps.RandomStrategy{}
 			me := strategy.Throw()
 			socket.Send(me.String(), 0)
-			fmt.Printf("Sent %v\n", me.String())
 			game.Throw(rps.Me, me)
 
 			you, err := rps.ThrowTypeFromString(msg)

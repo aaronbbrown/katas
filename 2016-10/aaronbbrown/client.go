@@ -23,15 +23,12 @@ func Client(address string) {
 		strategy := &rps.RandomStrategy{}
 		me := strategy.Throw()
 		socket.Send(me.String(), 0)
-		fmt.Printf("Sent %v\n", me.String())
 		game.Throw(rps.Me, me)
 
 		reply, err := socket.Recv(0)
 		if err != nil {
 			log.Fatalf("%v\n", err)
 		}
-		fmt.Printf("Received: %v\n", reply)
-
 		if reply == "end" {
 			break
 		}
