@@ -27,3 +27,11 @@ func TestMirrorWinnerStrategy(t *testing.T) {
 	mws = MirrorWinnerStrategy{PrevGame: g}
 	assert.Equal(t, mws.Throw(), Scissors)
 }
+
+func TestStubbornStrategy(t *testing.T) {
+	ss := StubbornStrategy{}
+	first := ss.Throw()
+	for i := 0; i < 10; i++ {
+		assert.Equal(t, ss.Throw(), first)
+	}
+}

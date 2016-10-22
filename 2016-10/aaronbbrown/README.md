@@ -28,6 +28,7 @@ The client offers alternative strategies for playing the game:
 * **random** (Default) - all throws are random
 * **mirrorlast** - Client (Me) will repeat the opponent's (You) last move
 * **mirrorwinner** - Client (Me) will repeat the previous winner's move
+* **stubborn** - Client (Me) will repeat the same move every time
 
 To pick a strategy, pass the `STRATEGY=strategy` env variable. e.g.:
 

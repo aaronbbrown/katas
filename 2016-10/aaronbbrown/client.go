@@ -17,12 +17,16 @@ func ZmqClient(address string, strategyEnv string) {
 
 	score := rps.Score{}
 	i := 0
+
 	prevGame := &rps.Game{}
+	stubbornStrategy := &rps.StubbornStrategy{}
 	for {
 		i++
 
 		// select strategy
 		switch strategyEnv {
+		case "stubborn":
+			strategy = stubbornStrategy
 		case "mirrorwinner":
 			strategy = &rps.MirrorWinnerStrategy{PrevGame: prevGame}
 		case "mirrorlast":
@@ -43,9 +47,9 @@ func ZmqClient(address string, strategyEnv string) {
 
 		outcome.UpdateScore(&score)
 
-		fmt.Println(game.String())
+		fmt.Print(game.String())
 		fmt.Printf("Winner:\t%s\n", outcome.String())
-		fmt.Printf("Score:\t%s\n", score.String())
+		fmt.Printf("Score:\t%s\n\n", score.String())
 	}
-	fmt.Printf("\nOverall Winner: %s\n\n", score.Winner().String())
+	fmt.Printf("Overall Winner: %s\n\n", score.Winner().String())
 }

@@ -52,3 +52,18 @@ func (r MirrorWinnerStrategy) Throw() ThrowType {
 	}
 	return r.PrevGame.Throws[outcome.Winner].Type
 }
+
+// StubbornStrategy will pick a throw and always use it
+type StubbornStrategy struct {
+	initialized bool
+	throw       ThrowType
+}
+
+func (r *StubbornStrategy) Throw() ThrowType {
+	if !r.initialized {
+		rs := &RandomStrategy{}
+		r.throw = rs.Throw()
+		r.initialized = true
+	}
+	return r.throw
+}

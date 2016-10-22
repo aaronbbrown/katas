@@ -37,7 +37,7 @@ func ZmqServer(games int, port int, control chan int) {
 			}
 			outcome.UpdateScore(&score)
 
-			fmt.Println(game.String())
+			fmt.Print(game.String())
 			fmt.Printf("Winner:\t%s\n", outcome.String())
 			fmt.Printf("Score:\t%s\n\n", score.String())
 		}
