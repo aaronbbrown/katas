@@ -7,11 +7,12 @@ import (
 
 func main() {
 	mode := os.Getenv("MODE")
+	strategyEnv := os.Getenv("STRATEGY")
 
 	switch mode {
 	case "client":
 		address := os.Getenv("ADDRESS")
-		ZmqClient(address)
+		ZmqClient(address, strategyEnv)
 
 	default:
 		control := make(chan int)

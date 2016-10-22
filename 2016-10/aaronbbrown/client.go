@@ -9,17 +9,30 @@ import (
 	zmq "github.com/pebbe/zmq4"
 )
 
-func ZmqClient(address string) {
+func ZmqClient(address string, strategyEnv string) {
+	var strategy rps.Strategy
 	socket, _ := zmq.NewSocket(zmq.PAIR)
 	defer socket.Close()
 	socket.Connect(address)
 
 	score := rps.Score{}
 	i := 0
+	prevGame := &rps.Game{}
 	for {
 		i++
-		strategy := &rps.RandomStrategy{}
+
+		// select strategy
+		switch strategyEnv {
+		case "mirrorwinner":
+			strategy = &rps.MirrorWinnerStrategy{PrevGame: prevGame}
+		case "mirrorlast":
+			strategy = &rps.MirrorLastStrategy{PrevGame: prevGame}
+		default:
+			strategy = &rps.RandomStrategy{}
+		}
+
 		game := NewZmqGame(socket, i, strategy)
+		prevGame = game // store state of prev game for MirrorLastStrategy
 		outcome, err := game.Play(rps.Me)
 		if err != nil {
 			log.Fatal(err)
