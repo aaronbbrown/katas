@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/aaronbbrown/rps/rps"
+	zmq "github.com/pebbe/zmq4"
 )
 
 // get an environment variable as an integer with a default
@@ -18,4 +21,28 @@ func GetEnvNDefault(key string, defValue int) (n int, err error) {
 		n = 10
 	}
 	return n, nil
+}
+
+// Allocate a new game over a ZMQ socket
+func NewZmqGame(socket *zmq.Socket, id int, strategy rps.Strategy) *rps.Game {
+	return &rps.Game{
+		Id:       id,
+		Strategy: strategy,
+		SendThrowFunc: func(throw rps.ThrowType) error {
+			socket.Send(throw.String(), 0)
+			return nil
+		},
+		ReceiveThrowFunc: func() (*rps.ThrowType, error) {
+			msg, err := socket.Recv(0)
+			if err != nil {
+				return nil, err
+			}
+			throw, err := rps.ThrowTypeFromString(msg)
+			if err != nil {
+				return nil, err
+			}
+			return &throw, nil
+		},
+	}
+
 }

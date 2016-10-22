@@ -76,3 +76,11 @@ func TestGame_Outcome(t *testing.T) {
 	assert.Equal(t, o.Winner, You)
 
 }
+
+func TestGame_String(t *testing.T) {
+	g := &Game{Id: 1}
+	g.Throw(Me, Rock)
+	g.Throw(You, Paper)
+
+	assert.Equal(t, g.String(), "Game:\t1\nMe:\trock\nYou:\tpaper\n")
+}

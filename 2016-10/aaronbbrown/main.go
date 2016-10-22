@@ -11,7 +11,7 @@ func main() {
 	switch mode {
 	case "client":
 		address := os.Getenv("ADDRESS")
-		Client(address)
+		ZmqClient(address)
 
 	default:
 		control := make(chan int)
@@ -24,6 +24,6 @@ func main() {
 			log.Fatal(err)
 		}
 
-		Server(games, port, control)
+		ZmqServer(games, port, control)
 	}
 }

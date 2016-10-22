@@ -16,6 +16,7 @@ const (
 	Rock ThrowType = iota
 	Paper
 	Scissors
+	End // server responds with End with all games have been played
 )
 
 func (t ThrowType) String() string {
@@ -26,6 +27,8 @@ func (t ThrowType) String() string {
 		return "paper"
 	case Scissors:
 		return "scissors"
+	case End:
+		return "end"
 	}
 	return ""
 }
@@ -38,6 +41,12 @@ func ThrowTypeFromString(s string) (tt ThrowType, err error) {
 		return Paper, nil
 	case "scissors":
 		return Scissors, nil
+	case "end":
+		return End, nil
 	}
 	return tt, fmt.Errorf("Unknown throw type: %s", s)
+}
+
+func (t *Throw) String() string {
+	return t.Type.String()
 }
