@@ -8,7 +8,7 @@ import (
 	zmq "github.com/pebbe/zmq4"
 )
 
-func ZmqServer(games int, port int, control chan int) {
+func ZmqServer(games int, port int, control chan int, strategyEnv string) {
 	socket, _ := zmq.NewSocket(zmq.PAIR)
 	defer socket.Close()
 
@@ -16,14 +16,29 @@ func ZmqServer(games int, port int, control chan int) {
 	socket.Bind(bindStr)
 	fmt.Printf("Socket: %s\n\n", bindStr)
 
+	var strategy rps.Strategy
+	prevGame := &rps.Game{}
+	stubbornStrategy := &rps.StubbornStrategy{}
 	for {
 		fmt.Printf("Games to play: %d\n", games)
 		score := rps.Score{}
 
 		// Wait for messages
 		for i := 1; i <= games; i++ {
-			strategy := &rps.RandomStrategy{}
+			// select strategy
+			switch strategyEnv {
+			case "stubborn":
+				strategy = stubbornStrategy
+			case "mirrorwinner":
+				strategy = &rps.MirrorWinnerStrategy{PrevGame: prevGame}
+			case "mirrorlast":
+				strategy = &rps.MirrorLastStrategy{PrevGame: prevGame}
+			default:
+				strategy = &rps.RandomStrategy{}
+			}
+
 			game := NewZmqGame(socket, i, strategy)
+			prevGame = game // store state of prev game for MirrorLastStrategy
 			outcome, err := game.Play(rps.You)
 			if err != nil {
 				log.Println(err)

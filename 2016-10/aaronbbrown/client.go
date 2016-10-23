@@ -10,7 +10,6 @@ import (
 )
 
 func ZmqClient(address string, strategyEnv string) {
-	var strategy rps.Strategy
 	socket, _ := zmq.NewSocket(zmq.PAIR)
 	defer socket.Close()
 	socket.Connect(address)
@@ -18,6 +17,7 @@ func ZmqClient(address string, strategyEnv string) {
 	score := rps.Score{}
 	i := 0
 
+	var strategy rps.Strategy
 	prevGame := &rps.Game{}
 	stubbornStrategy := &rps.StubbornStrategy{}
 	for {

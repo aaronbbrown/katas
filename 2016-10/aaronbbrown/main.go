@@ -25,6 +25,6 @@ func main() {
 			log.Fatal(err)
 		}
 
-		ZmqServer(games, port, control)
+		ZmqServer(games, port, control, strategyEnv)
 	}
 }
