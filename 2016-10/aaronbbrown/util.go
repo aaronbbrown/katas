@@ -44,5 +44,20 @@ func NewZmqGame(socket *zmq.Socket, id int, strategy rps.Strategy) *rps.Game {
 			return &throw, nil
 		},
 	}
+}
+
+func NewChanGame(channel chan rps.ThrowType, id int) *rps.Game {
+	return &rps.Game{
+		Id:       id,
+		Strategy: &rps.RandomStrategy{},
+		SendThrowFunc: func(throw rps.ThrowType) error {
+			channel <- throw
+			return nil
+		},
+		ReceiveThrowFunc: func() (*rps.ThrowType, error) {
+			result := <-channel
+			return &result, nil
+		},
+	}
 
 }

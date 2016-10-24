@@ -53,3 +53,28 @@ func ZmqClient(address string, strategyEnv string) {
 	}
 	fmt.Printf("Overall Winner: %s\n\n", score.Winner().String())
 }
+
+func ChannelClient(throwChan chan rps.ThrowType) {
+	i := 0
+	score := rps.Score{}
+
+	for {
+		i++
+
+		game := NewChanGame(throwChan, i)
+		outcome, err := game.Play(rps.Me)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if outcome.End {
+			break
+		}
+		outcome.UpdateScore(&score)
+
+		fmt.Print(game.String())
+		fmt.Printf("Winner:\t%s\n", outcome.String())
+		fmt.Printf("Score:\t%s\n\n", score.String())
+
+	}
+	fmt.Printf("Overall Winner: %s\n\n", score.Winner().String())
+}

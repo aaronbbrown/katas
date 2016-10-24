@@ -65,3 +65,21 @@ func ZmqServer(games int, port int, control chan int, strategyEnv string) {
 	}
 	control <- 1
 }
+
+func ChannelServer(games int, throwChan chan rps.ThrowType) {
+	fmt.Printf("Games to play: %d\n", games)
+
+	// Wait for messages
+	for i := 1; i <= games; i++ {
+		game := NewChanGame(throwChan, i)
+		_, err := game.Play(rps.You)
+		if err != nil {
+			log.Println(err)
+			break
+		}
+	}
+	// need this extra receive because the client is optimistic and doesn't
+	// know how many games we're going to play.
+	<-throwChan
+	throwChan <- rps.End
+}
